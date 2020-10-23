@@ -16,9 +16,7 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   processxServer("process1", 
-                 command = "bash", 
-                 args = c("-c", 
-                          "./script.sh"))
+                 command = "script.sh")
   processxServer("process2",
                  command = "bash",
                  args = c("-c", "echo 'sleeping for 5 seconds and exiting with error'; sleep 5; exit 1"))
