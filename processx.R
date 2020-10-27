@@ -17,13 +17,29 @@ if(any(grepl("^shiny$", installed.packages()[,1]))) {
 } else 
   installGitHub("rstudio/shiny")
 
-
 require("shiny")
 require("processx")
 
-
-processxUI <- function(id, ...) {
+processxUI <- function(id, logHeight = "500px", ...) {
+  #JavaScript code to automatically scroll the log file to the last line
+  autoscroll_JS <- paste0("
+$(document).ready(function(){
+  var objDiv = document.getElementById('", NS(id, "processLog"), "');
+  // create an observer instance
+  var observer = new MutationObserver(function(mutations) {
+    objDiv.scrollTop = objDiv.scrollHeight - objDiv.clientHeight;
+  });
+  // configuration of the observer
+  var config = {childList: true};
+  // observe objDiv
+  observer.observe(objDiv, config);
+})
+")
   list(
+    tags$head(
+      tags$script(HTML(autoscroll_JS)),
+      tags$style(paste0("#", NS(id, "processLog"), "{overflow-y:scroll; max-height: ", logHeight, ";}"))
+    ),
     uiOutput(NS(id, "startStopBtn")),
     p(),
     uiOutput(NS(id, "processStatus")),
