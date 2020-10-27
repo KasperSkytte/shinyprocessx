@@ -68,8 +68,7 @@ processxServer <- function(id, ...) {
             ..., 
             stderr = "2>&1",
             stdout = logfile(),
-            supervise = TRUE,
-            env = NULL
+            supervise = TRUE
           )
         )
       }
