@@ -5,7 +5,7 @@ ui <- fluidPage(
   column(
     width = 6,
     h2("Process 1"),
-    helpText("Run an external shell script with no additional arguments passed"),
+    helpText("Run an external shell script with no additional arguments passed. (This is not allowed on shinyapps.io so expect a disconnect)"),
     processxUI("process1")
   ),
   column(
