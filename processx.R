@@ -78,14 +78,21 @@ processxServer <- function(id, ...) {
       startProcess <- function(...) {
         #generate new log file for each new process
         logfile(tempfile())
+        
+        #generate list of additional arguments to be passed to process
+        #from outside the module namespace. args must therefore be a reactive()
+        dots <- list(...)
+        if(!is.null(dots$args))
+          dots$args <- as.character(dots$args())
+        arg_list <- c(
+          dots,
+          stderr = "2>&1",
+          stdout = logfile(),
+          supervise = TRUE)
+        
         #start process piping stderr+stdout to logfile
         process(
-          processx::process$new(
-            ..., 
-            stderr = "2>&1",
-            stdout = logfile(),
-            supervise = TRUE
-          )
+          do.call(processx::process$new, arg_list)
         )
       }
       if(is.null(process()$is_alive))
